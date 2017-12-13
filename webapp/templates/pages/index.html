@@ -1,12 +1,39 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'customize_components/style.css' %}" />
 <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js'%}"></script>
+
 <br>
 <div class="container">
 	<div class="row">
-		<div class="col"> <h1> TEST BOOTSTRAP4</h1></div>
+		<div class="col text-center"> <h1 > TEST BOOTSTRAP4</h1></div>
 	</div>
 	<div class="row">
-		<div class="col"> <button class="btn btn-primary"> OK </button> </div>
+		<div class="col-3"> 
+			<input type="text" id="todo_name" style="width:100%">	
+		</div>
+		<div class="col"> 
+			<button class="btn btn-success">Add</button>
+			<button class="btn btn-danger" id="btn-clear"> Clear Selection </button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">  </div>
+	</div>
+	<div class="row">
+		<div class="col-3">
+			<ul class="list-group todo-list">
+		  	{% for i in listnums %}
+		        <li class="list-group-item todo-item" > 
+		        	<label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+					    <input type="checkbox" class="custom-control-input ">
+					    <span class="custom-control-indicator"></span>
+					    <span class="custom-control-description todo-desc">To do {{ i }}</span>
+					  </label>
+		        </li>
+		    {% endfor %}
+			</ul>
+		</div>
 	</div>
 </div>
+<script type="text/javascript" src="{% static 'customize_components/controller.js'%}"></script>

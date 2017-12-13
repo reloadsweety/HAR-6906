@@ -1,5 +1,3 @@
-from django.http import HttpResponse
-from django.template import loader
 from django.shortcuts import render
 
 
@@ -11,5 +9,5 @@ def index(request):
 
 
 def index(request):
-    context = {'a': 'a'}
+    context = {'listnums': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
     return render(request, 'pages/index.html', context)
