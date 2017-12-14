@@ -6,8 +6,8 @@
 
  WORKDIR /app
 
- ADD requirements.txt /app/
+ ADD requirements/base.txt /app/
 
- RUN pip install -r requirements.txt
+ RUN pip install -r base.txt
  
  ADD . /app/
