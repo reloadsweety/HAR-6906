@@ -2,3 +2,12 @@
     text-decoration: line-through;
     color: #b5b5b5;
 }
+
+.todo_name{
+    height: 36px;
+    margin-right: 10px;
+}
+
+.todo-list label{
+    margin: 10px 0 10px 0px;
+}

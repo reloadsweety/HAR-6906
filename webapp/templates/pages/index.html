@@ -4,17 +4,24 @@
 <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js'%}"></script>
 
 <br>
+
+
 <div class="container">
 	<div class="row">
 		<div class="col text-center"> <h1 > TODO LIST</h1></div>
 	</div>
 	<div class="row">
-		<div class="col-3"> 
-			<input type="text" id="todo_name" style="width:100%">	
+		<div class="col-5"> 
+			<form  id="form_add" action="{% url 'webapp:addtodo' %}" method="post">
+				{% csrf_token %}
+				TODO NAME : <input type="text" name="todo_name" class="todo_name" >	
+				<button class="btn btn-success" onclick="form_add.submit()">Add</button>
+			</form>
 		</div>
-		<div class="col"> 
-			<button class="btn btn-success" onclick="add_todo()">Add</button>
-			<button class="btn btn-danger" id="btn-clear"> Clear Selection </button>
+	</div>
+	<div class="row">
+		<div class="col">
+			{% if error_message %}<p><strong style="color:red">{{ error_message }}</strong></p>{% endif %}
 		</div>
 	</div>
 	<div class="row">
@@ -22,17 +29,19 @@
 	</div>
 	<div class="row">
 		<div class="col-3">
-			<ul class="list-group todo-list">
-		  	{% for todo in todo_lists %}
-		        <li class="list-group-item todo-item" check="{{ todo.is_check }}" > 
-		        	<label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
-					    <input type="checkbox" class="custom-control-input">
+			<form  id="form_delete" action="{% url 'webapp:removetodo' %}" method="post"> 
+				{% csrf_token %}
+				<button class="btn btn-danger"  id="btn-clear" onclick="form_delete.submit()"> Clear Selection </button>
+				<ul class="list-group todo-list">
+			  	{% for todo in todo_lists %}
+		        	<label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0 todo-item ">
+					    <input type="checkbox" name="todos" value="{{todo.id}}" class="custom-control-input" >
 					    <span class="custom-control-indicator"></span>
 					    <span class="custom-control-description todo-desc">{{ todo.todo_name }}</span>
-					  </label>
-		        </li>
-		    {% endfor %}
-			</ul>
+					</label>
+			    {% endfor %}
+				</ul>
+			</form>
 		</div>
 	</div>
 
