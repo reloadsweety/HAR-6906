@@ -1,9 +1,7 @@
-from django.views import generic
+from django.views import generic, View
 from .models import Todo
 from django.utils import timezone
 from django.shortcuts import redirect, reverse, render
-
-
 '''
 def index(request):
     template = loader.get_template('index.html')
@@ -23,28 +21,28 @@ class IndexView(generic.ListView):
         return Todo.objects.all().order_by("-create_date")
 
 
-def add_todo(request):
-    name = request.POST.get('todo_name')
-    context = {'error_message': '', 'todo_lists': Todo.objects.all().order_by("-create_date")}
-    todo = Todo(todo_name=name, create_date=timezone.now())
-    if name:
-        if len(Todo.objects.filter(todo_name=name)) == 0:
+class AddTodo(View):
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('todo_name')
+        todo = Todo(todo_name=name, create_date=timezone.now())
+        context = {'error_message': '', 'todo_lists': Todo.objects.all()}
+        try:
             todo.save()
-        else:
-            context['error_message'] = 'todo is already exist'
-    else:
-        context['error_message'] = 'can not add todo with blank value'
+        except Exception as e:
+            if 'unique constraint' in str(e):
+                context['error_message'] = 'todo is already exist'
+        '''
+            context['error_message'] = 'can not add todo with blank value'
+        '''
+        if context['error_message']:
+            return render(request, 'pages/index.html', context)
+        return redirect(reverse("webapp:index"))
 
-    if context['error_message']:
-        return render(request, 'pages/index.html', context)
 
-    return redirect(reverse("webapp:index"))
-
-
-def remove_todo(request):
-    todos = request.POST.getlist('todos')
-    for id in todos:
-        obj = Todo.objects.get(pk=id)
-        obj.delete()
-
-    return redirect(reverse("webapp:index"))
+class RemoveTodo(View):
+    def post(self, request, *args, **kwargs):
+        todos = self.request.POST.getlist('todos')
+        for id in todos:
+            obj = Todo.objects.get(pk=id)
+            obj.delete()
+        return redirect(reverse("webapp:index"))
